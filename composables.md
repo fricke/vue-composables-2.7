@@ -2,9 +2,9 @@
 
 ### Introduction
 
-Vue Composables are a valuable extension within the Vue framework, offering an elevated approach to managing concerns within Vue components. At their essence, Vue Composables encapsulate functions integrated with Vue Reactive fields, Vue lifecycle methods, and assorted Vue component functionalities that are conventionally employed within components.
+Vue Composables are a valuable extension within the Vue framework, offering a better approach to managing concerns within Vue components. At their core, Vue Composables encapsulate functions integrated with Vue Reactive fields, Vue lifecycle methods, and assorted Vue component functionalities that are conventionally employed within components.
 
-In contrast to the previous usage of mixins in Vue versions prior to `2.7`, Vue Composables provide a more refined solution without the associated pitfalls that mixins introduced, such as naming conflicts, intricate debugging, and overly tight coupling.
+In contrast to the usage of mixins in Vue versions prior to `2.7`, Vue Composables provide a more refined solution without the pitfalls that mixins introduced, such as naming conflicts, intricate debugging, and overly tight coupling.
 
 ### Example of Asynchronous Composables
 
@@ -29,6 +29,7 @@ function useMovies(): UseMoviesResult {
     loadMovies();
   });
 
+  // Data from a Vuex store can be used in a composable. 
   const activeCountry = computed<string>(() => {
     return store.get("activeCountry");
   });
@@ -42,6 +43,8 @@ function useMovies(): UseMoviesResult {
     loading.value = false;
   }
 
+  // Composables can return any value, but for reactivity in the caller use `ref`, `computed`, or `reactive` values.
+  // Functions can be exposed by returning those here as well. 
   return { loading, movies };
 }
 
@@ -105,6 +108,7 @@ function useFilteredMovies(): UseFilteredMovies {
     return store.get("filters");
   });
 
+  // Changes to either categoryFilters or movies will trigger a filtering of movies
   watch([categoryFilters, movies], filterMovies);
 
   function filterMovies() {
