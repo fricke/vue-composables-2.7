@@ -1,0 +1,24 @@
+{
+  "extends": "@vue/tsconfig/tsconfig.web.json",
+  "include": ["shims-vue.d.ts","env.d.ts", "src/**/*", "src/**/*.vue"],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "types": [
+      "jest",
+      "@testing-library/jest-dom",
+      "@testing-library/vue"
+    ]
+  },
+  "files": [
+    "./shims-vue.d.ts"
+  ],
+
+  "references": [
+    {
+      "path": "./tsconfig.config.json"
+    }
+  ]
+}
