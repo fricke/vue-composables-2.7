@@ -6,6 +6,8 @@ Vue Composables are a valuable extension within the Vue framework, offering a be
 
 In contrast to the usage of mixins in Vue versions prior to `2.7`, Vue Composables provide a more refined solution without the pitfalls that mixins introduced, such as naming conflicts, intricate debugging, and overly tight coupling.
 
+**Documentation**: https://vuejs.org/guide/reusability/composables.html
+
 ### Example of Asynchronous Composables
 
 ```typescript
