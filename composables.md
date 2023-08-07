@@ -230,8 +230,8 @@ To effectively mock a composable:
 1. Begin by importing the composable into your test suite.
 2. At the outset of the test, use `jest.mock('path/to/composable')` to mock the targeted composable.
 3. Instantiate variables outside the mock implementation that mirror the ones expected to be returned from the composable.
-4. Configure these variables to align with the TypeScript signature of the composable's return values.
-5. Leverage these variables, such as setting `loading.value = true`, to conduct direct UI reactivity assessments.
+4. Return these variables to align with the TypeScript signature of the composable's return values.
+5. Use these variables, such as setting `loading.value = true`, to trigger UI component reactivity and test those results. 
 
 ```typescript
 import '@testing-library/jest-dom';
