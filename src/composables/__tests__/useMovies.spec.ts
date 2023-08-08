@@ -3,7 +3,7 @@ import { mount } from "@vue/test-utils";
 import type { Wrapper } from "@vue/test-utils";
 import Vuex, { Store } from "vuex";
 import useMovies from "@/composables/useMovies";
-import type {UseMoviesResult} from "@/composables/useMovies";
+import type { UseMoviesResult } from "@/composables/useMovies";
 import flushPromises from "@/tests/flushPromises";
 import fetchMovies from "@/fetchMovies";
 import type { AppState, Movie } from "@/types";
@@ -30,14 +30,14 @@ describe("useMovies", () => {
     expect(mountedComponent.vm.loading).toEqual(false);
   });
 
-  it('should refetch data when country changes', async () => {
+  it("should refetch data when country changes", async () => {
     const { store } = mountComposable();
     await flushPromises();
     store.state.activeCountry = "Japan";
     await flushPromises();
-    expect(fetchMovies).toHaveBeenCalledTimes(2)
-    expect(fetchMovies).toHaveBeenCalledWith('Japan');
-  })
+    expect(fetchMovies).toHaveBeenCalledTimes(2);
+    expect(fetchMovies).toHaveBeenCalledWith("Japan");
+  });
 });
 
 function mountComposable(): {
@@ -67,6 +67,8 @@ function mountComposable(): {
     template: "<div/>",
   });
 
-  const mountedComponent = mount(TestComponentWithComposable) as Wrapper<Vue & UseMoviesResult>;
+  const mountedComponent = mount(TestComponentWithComposable) as Wrapper<
+    Vue & UseMoviesResult
+  >;
   return { store, mountedComponent };
 }
