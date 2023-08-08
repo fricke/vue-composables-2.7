@@ -157,30 +157,29 @@ import fetchMovies from "@/fetchMovies";
 import type { AppState, Movie } from "@/types";
 import useStore from "@/composables/useStore";
 import pathify, { make } from "vuex-pathify";
-import mountComposable from "@/tests/mountComposable";
 
 jest.mock("@/fetchMovies");
 jest.mock("@/composables/useStore");
 
 describe("useMovies", () => {
   it("should fetch movies on mount", () => {
-    mountComposable(useMovies);
+    mountComposable();
     expect(fetchMovies).toHaveBeenCalledWith("US");
   });
 
   it("should set loading to true when fetching data", () => {
-    const { mountedComponent } = mountComposable(useMovies);
+    const { mountedComponent } = mountComposable();
     expect(mountedComponent.vm.loading).toEqual(true);
   });
 
   it("should set loading to false when done fetching data", async () => {
-    const { mountedComponent } = mountComposable(useMovies);
+    const { mountedComponent } = mountComposable();
     await flushPromises();
     expect(mountedComponent.vm.loading).toEqual(false);
   });
 
   it("should refetch data when country changes", async () => {
-    const { store } = mountComposable(useMovies);
+    const { store } = mountComposable();
     await flushPromises();
     // Simply change state, flush promises, to test state changes in UI
     store.state.activeCountry = "Japan";
@@ -189,6 +188,40 @@ describe("useMovies", () => {
     expect(fetchMovies).toHaveBeenCalledWith("Japan");
   });
 });
+
+function mountComposable(): {
+  mountedComponent: Wrapper<Vue & UseMoviesResult>;
+  store: Store<Partial<AppState>>;
+} {
+  const state = { activeCountry: "US" };
+  const store = new Vuex.Store<any>({
+    state,
+    plugins: [pathify.plugin],
+    mutations: make.mutations(state),
+  });
+
+  (fetchMovies as jest.Mock).mockResolvedValue([
+    { id: 1, name: "Pulp Fiction", category: "Drama" },
+    { id: 2, name: "Inglorious Bastards", category: "Drama" },
+  ] as Movie[]);
+
+  (useStore as jest.Mock).mockImplementation(() => {
+    return store;
+  });
+
+  const TestComponentWithComposable = defineComponent({
+    setup() {
+      return useMovies();
+    },
+    template: "<div/>",
+  });
+
+  const mountedComponent = mount(TestComponentWithComposable) as Wrapper<
+    Vue & UseMoviesResult
+  >;
+  return { store, mountedComponent };
+}
+
 ```
 
 ### Creating a Test Helper Function for Mounting Composables
